@@ -1,0 +1,30 @@
+<!-- In the Recent Activity section -->
+<div class="space-y-4">
+    {% for job in user_jobs %}
+    <div class="border-b border-gray-100 pb-4">
+        <p class="text-sm text-gray-500">Posted a job</p>
+        <p class="font-medium">{{ job.title }} at {{ job.company }}</p>
+        <p class="text-xs text-gray-500">{{ job.created_at.strftime('%b %d, %Y') }}</p>
+    </div>
+    {% endfor %}
+    
+    {% for event in user_events %}
+    <div class="border-b border-gray-100 pb-4">
+        <p class="text-sm text-gray-500">Created an event</p>
+        <p class="font-medium">{{ event.name }}</p>
+        <p class="text-xs text-gray-500">{{ event.date.strftime('%b %d, %Y') }}</p>
+    </div>
+    {% endfor %}
+    
+    {% for post in user_posts %}
+    <div class="border-b border-gray-100 pb-4">
+        <p class="text-sm text-gray-500">Posted in forum</p>
+        <p class="font-medium">{{ post.title }}</p>
+        <p class="text-xs text-gray-500">{{ post.created_at.strftime('%b %d, %Y') }}</p>
+    </div>
+    {% endfor %}
+    
+    {% if not user_jobs and not user_events and not user_posts %}
+    <p class="text-gray-500">No recent activity yet</p>
+    {% endif %}
+</div>

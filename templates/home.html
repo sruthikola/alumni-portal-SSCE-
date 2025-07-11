@@ -1,0 +1,169 @@
+{% extends "layout.html" %}
+
+{% block extra_css %}
+<style>
+  .hero-section {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                      url('{{ url_for("static", filename="sivani.jpeg") }}');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .logo-container {
+    position: absolute;
+    top: 7rem;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    z-index: 20;
+  }
+  
+  .logo {
+    height: 130px;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+  
+  .logo:hover {
+    transform: scale(1.05);
+  }
+
+  /* About Section Styles */
+  .about-section {
+    background-color: #f8f9fa;
+  }
+  
+  .about-image {
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section min-h-screen flex items-center justify-center text-center text-white relative">
+  <div class="absolute inset-0 bg-black/50"></div>
+  
+  <!-- Logo positioned at the top center -->
+  <div class="logo-container">
+    <a href="{{ url_for('home') }}">
+      <img src="{{ url_for('static', filename='images/sivani logo.png') }}" alt="Alumni Portal Logo" class="logo">
+    </a>
+  </div>
+  
+  <div class="container px-4 z-10">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6">Welcome to the Alumni Portal</h1>
+    <p class="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">Connect with fellow graduates and discover new opportunities</p>
+    <div class="flex flex-col sm:flex-row justify-center gap-4">
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('portal') }}" class="bg-primary hover:bg-secondary text-white px-8 py-3 rounded-lg text-lg font-medium transition">Go to Portal</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="bg-primary hover:bg-secondary text-white px-8 py-3 rounded-lg text-lg font-medium transition">Login</a>
+        <a href="{{ url_for('register') }}" class="bg-transparent hover:bg-white/10 border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-medium transition">Register</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section class="py-16 about-section">
+  <div class="container px-4 mx-auto">
+    <div class="flex flex-col md:flex-row items-center gap-12">
+      <div class="md:w-1/2">
+        <h2 class="text-3xl font-bold mb-6">About Our Alumni Portal</h2>
+        <p class="text-gray-600 mb-4">The Alumni Portal is designed to connect graduates of Sri Sivani College of Engineering, fostering lifelong relationships and creating opportunities for professional growth.</p>
+        <p class="text-gray-600 mb-4">Our mission is to build a strong, supportive community where alumni can network, share opportunities, mentor current students, and stay connected with their alma mater.</p>
+        <p class="text-gray-600">Whether you're looking for career opportunities, wanting to give back, or just stay in touch with classmates, our portal provides the tools you need.</p>
+      </div>
+      <div class="md:w-1/2">
+        <img src="{{ url_for('static', filename='images/sivani.jpeg') }}" alt="Sri Sivani College of Engineering" class="about-image w-full">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Facilities Section -->
+<section class="py-16 bg-white">
+    <div class="container px-4 mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold mb-4">Our Facilities</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">World-class infrastructure for quality education</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                <img src="{{ url_for('static', filename='images/labs/cse/1.jpg') }}" alt="Computer Lab" class="w-full h-48 object-cover">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Advanced Labs</h3>
+                    <p class="text-gray-600 mb-4">State-of-the-art laboratories with modern equipment.</p>
+                    <a href="{{ url_for('facilities') }}" class="text-primary hover:underline">View Facilities →</a>
+                </div>
+            </div>
+            
+            <!-- Add 2 more featured facilities here -->
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-16 bg-white">
+  <div class="container px-4 mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12">Why Join Our Alumni Network?</h2>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition">
+        <div class="text-primary text-4xl mb-4">
+          <i class="fas fa-network-wired"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-3">Networking</h3>
+        <p class="text-gray-600">Connect with fellow alumni across industries and geographies to expand your professional network.</p>
+      </div>
+      
+      <!-- Feature 2 -->
+      <div class="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition">
+        <div class="text-primary text-4xl mb-4">
+          <i class="fas fa-briefcase"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-3">Career Opportunities</h3>
+        <p class="text-gray-600">Access exclusive job postings and career resources shared by alumni and recruiters.</p>
+      </div>
+      
+      <!-- Feature 3 -->
+      <div class="bg-gray-50 rounded-xl p-8 shadow-sm hover:shadow-md transition">
+        <div class="text-primary text-4xl mb-4">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </div>
+        <h3 class="text-xl font-semibold mb-3">Mentorship</h3>
+        <p class="text-gray-600">Give back by mentoring current students or get guidance from experienced alumni in your field.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 bg-primary text-white">
+  <div class="container px-4 mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-4xl font-bold mb-2">5,000+</p>
+        <p class="text-gray-200">Alumni</p>
+      </div>
+      <div>
+        <p class="text-4xl font-bold mb-2">120+</p>
+        <p class="text-gray-200">Companies</p>
+      </div>
+      <div>
+        <p class="text-4xl font-bold mb-2">50+</p>
+        <p class="text-gray-200">Countries</p>
+      </div>
+      <div>
+        <p class="text-4xl font-bold mb-2">100+</p>
+        <p class="text-gray-200">Events Yearly</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

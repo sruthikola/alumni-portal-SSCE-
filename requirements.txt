@@ -1,0 +1,8 @@
+Flask
+Flask-Login
+Flask-PyMongo
+Flask-CORS
+python-dotenv
+werkzeug
+requests
+python-dateutil

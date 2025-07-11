@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sri Sivani College of Engineering Alumni Portal - Connect with fellow graduates and discover opportunities">
+  <meta name="keywords" content="alumni, engineering, college, network, jobs, mentorship">
+  <meta name="author" content="Sri Sivani College of Engineering">
+  <title>{% block title %}Alumni Portal - Sri Sivani College{% endblock %}</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#3b82f6',
+            secondary: '#2563eb',
+            accent: '#60a5fa',
+            dark: '#111827',
+            darker: '#0f172a',
+            light: '#f3f4f6',
+            card: '#1f2937',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+            'nav': '0 2px 4px rgba(0, 0, 0, 0.1)',
+            'dark-card': '0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1)'
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Dark theme styles for specific pages */
+    .dark-theme {
+      background-color: #111827;
+      color: #f3f4f6;
+    }
+    
+    .dark-theme .card {
+      background-color: #1f2937;
+      border-color: #374151;
+      color: #f3f4f6;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dark-theme .text-muted {
+      color: #9ca3af !important;
+    }
+    
+    .dark-theme a {
+      color: #93c5fd;
+    }
+    
+    .dark-theme a:hover {
+      color: #60a5fa;
+    }
+    
+    .dark-theme .bg-white {
+      background-color: #1f2937 !important;
+    }
+    
+    .dark-theme .text-gray-800 {
+      color: #f3f4f6 !important;
+    }
+    
+    .dark-theme .text-gray-600 {
+      color: #d1d5db !important;
+    }
+    
+    .dark-theme .border-gray-200 {
+      border-color: #374151 !important;
+    }
+    
+    .dark-theme .bg-gray-50 {
+      background-color: #111827 !important;
+    }
+    
+    .dark-theme .bg-darker {
+      background-color: #0f172a !important;
+    }
+    
+    /* Default light theme styles */
+    body {
+      @apply bg-gray-50 text-gray-800;
+    }
+    
+    .card {
+      @apply bg-white rounded-lg shadow-card transition-all duration-300 border border-gray-200 overflow-hidden;
+    }
+    
+    .card:hover {
+      @apply shadow-md transform -translate-y-1;
+    }
+    
+    .nav-link {
+      @apply relative;
+    }
+    
+    .nav-link:after {
+      @apply content-[''] absolute w-0 h-0.5 bottom-0 left-0 bg-primary transition-all duration-300;
+    }
+    
+    .nav-link:hover:after {
+      @apply w-full;
+    }
+    
+    .btn-primary {
+      @apply bg-primary hover:bg-secondary text-white px-6 py-2 rounded-md transition-colors duration-300 shadow;
+    }
+    
+    .btn-outline {
+      @apply border border-primary text-primary hover:bg-primary hover:text-white px-6 py-2 rounded-md transition-colors duration-300;
+    }
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      @apply bg-gray-200;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      @apply bg-gray-400 rounded-full;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      @apply bg-gray-500;
+    }
+    
+    .dark-theme ::-webkit-scrollbar-track {
+      @apply bg-gray-800;
+    }
+    
+    .dark-theme ::-webkit-scrollbar-thumb {
+      @apply bg-gray-600 rounded-full;
+    }
+    
+    .dark-theme ::-webkit-scrollbar-thumb:hover {
+      @apply bg-gray-500;
+    }
+  </style>
+  
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="font-sans min-h-screen flex flex-col {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}dark-theme{% endif %}">
+  <!-- Navigation -->
+  <nav class="bg-white shadow-nav sticky top-0 z-50 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}dark:bg-darker dark:border-b dark:border-gray-800{% endif %}">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex justify-between items-center">
+        <a href="{{ url_for('home') }}" class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center">
+            <i class="fas fa-graduation-cap text-white text-xl"></i>
+          </div>
+          <span class="text-xl font-bold {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-white{% else %}text-gray-800{% endif %}">Alumni Portal</span>
+        </a>
+        
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="{{ url_for('home') }}" class="nav-link {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Home</a>
+          <a href="{{ url_for('about') }}" class="nav-link {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">About</a>
+          <a href="{{ url_for('facilities') }}" class="nav-link {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Facilities</a>
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('portal') }}" class="nav-link {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Portal</a>
+          {% endif %}
+          
+          {% if current_user.is_authenticated %}
+          <div class="relative group">
+            <button class="flex items-center space-x-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-200 hover:text-white{% else %}text-gray-700 hover:text-primary{% endif %}">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center text-white">
+                {{ current_user.name[0]|upper }}
+              </div>
+              <span class="font-medium">{{ current_user.name }}</span>
+              <i class="fas fa-chevron-down text-xs {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-400{% else %}text-gray-500{% endif %}"></i>
+            </button>
+            <div class="absolute right-0 mt-2 w-56 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-card border border-gray-700{% else %}bg-white border border-gray-200{% endif %} rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
+              <a href="{{ url_for('portal') }}#profile" class="block px-4 py-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:bg-gray-800 hover:text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">Profile</a>
+              <a href="{{ url_for('portal') }}#settings" class="block px-4 py-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:bg-gray-800 hover:text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">Settings</a>
+              <div class="border-t {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}border-gray-700{% else %}border-gray-200{% endif %} my-1"></div>
+              <a href="{{ url_for('logout') }}" class="block px-4 py-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:bg-gray-800 hover:text-white{% else %}text-gray-700 hover:bg-gray-100{% endif %}">Logout</a>
+            </div>
+          </div>
+          {% else %}
+          <a href="{{ url_for('login') }}" class="btn-outline">Login</a>
+          <a href="{{ url_for('register') }}" class="btn-primary">Register</a>
+          {% endif %}
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button class="md:hidden focus:outline-none {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-white{% else %}text-gray-600{% endif %}" id="mobile-menu-button">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+      </div>
+      
+      <!-- Mobile menu -->
+      <div class="md:hidden hidden py-4" id="mobile-menu">
+        <div class="flex flex-col space-y-4">
+          <a href="{{ url_for('home') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Home</a>
+          <a href="{{ url_for('about') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">About</a>
+          <a href="{{ url_for('facilities') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Facilities</a>
+          {% if current_user.is_authenticated %}
+          <a href="{{ url_for('portal') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Portal</a>
+          {% endif %}
+          
+          {% if current_user.is_authenticated %}
+          <div class="pt-4 border-t {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}border-gray-700{% else %}border-gray-200{% endif %}">
+            <a href="{{ url_for('portal') }}#profile" class="block py-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Profile</a>
+            <a href="{{ url_for('portal') }}#settings" class="block py-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Settings</a>
+            <a href="{{ url_for('logout') }}" class="block py-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %}">Logout</a>
+          </div>
+          {% else %}
+          <div class="flex space-x-4 pt-4 border-t {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}border-gray-700{% else %}border-gray-200{% endif %}">
+            <a href="{{ url_for('login') }}" class="flex-1 text-center btn-outline">Login</a>
+            <a href="{{ url_for('register') }}" class="flex-1 text-center btn-primary">Register</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="flex-grow">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} fixed top-20 right-4 z-50 bg-{% if category == 'success' %}green-500{% else %}red-500{% endif %} text-white px-6 py-3 rounded-md shadow-lg transform transition-all duration-300 ease-in-out translate-x-0 opacity-100 border border-{% if category == 'success' %}green-600{% else %}red-600{% endif %}">
+            {{ message }}
+            <button type="button" class="close-btn absolute top-1 right-2 text-xl hover:text-gray-200" onclick="this.parentElement.remove()">&times;</button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+    {% block content %}
+    <!-- Default content (homepage) -->
+    <section class="py-16 bg-gradient-to-b from-white to-gray-50">
+      <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+          <h1 class="text-4xl font-bold text-gray-800 mb-4">Welcome to Our Alumni Network</h1>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">Connect with fellow graduates, discover opportunities, and stay engaged with your alma mater.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div class="card">
+            <div class="p-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
+                <i class="fas fa-users text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Network</h3>
+              <p class="text-gray-600">Connect with alumni across different batches and industries.</p>
+            </div>
+          </div>
+          
+          <!-- Card 2 -->
+          <div class="card">
+            <div class="p-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
+                <i class="fas fa-briefcase text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Opportunities</h3>
+              <p class="text-gray-600">Find job openings and career advancement opportunities.</p>
+            </div>
+          </div>
+          
+          <!-- Card 3 -->
+          <div class="card">
+            <div class="p-6">
+              <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary">
+                <i class="fas fa-calendar-alt text-xl"></i>
+              </div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Events</h3>
+              <p class="text-gray-600">Stay updated with college events and alumni meetups.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section (Sample) -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">About Our Alumni Community</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <p class="text-gray-600 mb-4">Our alumni community consists of over 10,000 graduates from various disciplines, making an impact across the globe.</p>
+            <p class="text-gray-600 mb-6">We provide a platform for networking, mentorship, and continuous learning to help our alumni grow professionally and personally.</p>
+            <a href="{{ url_for('about') }}" class="btn-primary inline-flex items-center">
+              Learn More <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+          <div class="bg-white rounded-lg overflow-hidden shadow-card">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Alumni meeting" class="w-full h-auto">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Facilities Section (Sample) -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">College Facilities</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Library" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Modern Library</h3>
+              <p class="text-gray-600">State-of-the-art library with extensive resources and study spaces.</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1554475901-4538ddfbccc2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Lab" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Advanced Labs</h3>
+              <p class="text-gray-600">Well-equipped laboratories for practical learning and research.</p>
+            </div>
+          </div>
+          
+          <div class="card">
+            <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Sports" class="w-full h-48 object-cover">
+            <div class="p-6">
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Sports Complex</h3>
+              <p class="text-gray-600">Comprehensive sports facilities for physical development.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portal Section (Sample) -->
+    {% if current_user.is_authenticated %}
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Your Alumni Portal</h2>
+        <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-card p-8">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <div class="p-6">
+              <div class="radial-progress mx-auto mb-4" style="--value:85; --size:6rem; --thickness:0.5rem;" role="progressbar">85%</div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Profile Complete</h3>
+              <p class="text-gray-600 text-sm">Update your profile to access all features</p>
+            </div>
+            
+            <div class="p-6 border-l border-r border-gray-200">
+              <div class="text-4xl font-bold text-primary mb-4">24</div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Connections</h3>
+              <p class="text-gray-600 text-sm">Alumni in your network</p>
+            </div>
+            
+            <div class="p-6">
+              <div class="text-4xl font-bold text-primary mb-4">5</div>
+              <h3 class="text-xl font-semibold text-gray-800 mb-2">Upcoming Events</h3>
+              <p class="text-gray-600 text-sm">You're invited to attend</p>
+            </div>
+          </div>
+          
+          <div class="mt-8 pt-8 border-t border-gray-200">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Activity</h3>
+            <div class="space-y-4">
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-4 mt-1">
+                  <i class="fas fa-bell"></i>
+                </div>
+                <div>
+                  <p class="text-gray-600">New job posting from <span class="text-gray-800">Microsoft</span> matches your profile</p>
+                  <p class="text-gray-500 text-sm">2 hours ago</p>
+                </div>
+              </div>
+              
+              <div class="flex items-start">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mr-4 mt-1">
+                  <i class="fas fa-user-plus"></i>
+                </div>
+                <div>
+                  <p class="text-gray-600"><span class="text-gray-800">Rahul Sharma</span> (2018 Batch) accepted your connection request</p>
+                  <p class="text-gray-500 text-sm">1 day ago</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white py-12 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}dark:bg-darker dark:text-gray-300 dark:border-t dark:border-gray-800{% endif %}">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-lg font-semibold mb-4 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-white{% else %}text-gray-800{% endif %}">Alumni Portal</h3>
+          <p class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}">Connecting graduates of Sri Sivani College of Engineering with opportunities and each other.</p>
+          <div class="mt-4">
+            <p class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"><i class="fas fa-map-marker-alt mr-2 text-accent"></i> Chilakapalem, Srikakulam, AP</p>
+            <p class="mt-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"><i class="fas fa-phone-alt mr-2 text-accent"></i> +91 89456 78901</p>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-white{% else %}text-gray-800{% endif %}">Quick Links</h3>
+          <ul class="space-y-2">
+            <li><a href="{{ url_for('home') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Home</a></li>
+            <li><a href="{{ url_for('about') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">About</a></li>
+            <li><a href="{{ url_for('facilities') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Facilities</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('portal') }}" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Portal</a></li>
+            {% endif %}
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-white{% else %}text-gray-800{% endif %}">Resources</h3>
+          <ul class="space-y-2">
+            <li><a href="#" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Career Services</a></li>
+            <li><a href="#" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Mentorship Program</a></li>
+            <li><a href="#" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Events Calendar</a></li>
+            <li><a href="#" class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300 hover:text-accent{% else %}text-gray-600 hover:text-primary{% endif %} transition">Alumni Directory</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="text-lg font-semibold mb-4 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-white{% else %}text-gray-800{% endif %}">Connect</h3>
+          <div class="flex space-x-4 mb-4">
+            <a href="#" class="w-10 h-10 rounded-full {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 hover:bg-primary{% else %}bg-gray-200 hover:bg-primary{% endif %} flex items-center justify-center transition">
+              <i class="fab fa-facebook-f {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 hover:bg-blue-400{% else %}bg-gray-200 hover:bg-blue-400{% endif %} flex items-center justify-center transition">
+              <i class="fab fa-twitter {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 hover:bg-blue-600{% else %}bg-gray-200 hover:bg-blue-600{% endif %} flex items-center justify-center transition">
+              <i class="fab fa-linkedin-in {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"></i>
+            </a>
+            <a href="#" class="w-10 h-10 rounded-full {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 hover:bg-pink-600{% else %}bg-gray-200 hover:bg-pink-600{% endif %} flex items-center justify-center transition">
+              <i class="fab fa-instagram {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"></i>
+            </a>
+          </div>
+          <p class="mb-4 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-300{% else %}text-gray-600{% endif %}"><i class="fas fa-envelope mr-2 text-accent"></i> alumni@sivani.edu</p>
+          
+          <div>
+            <h4 class="font-medium mb-2 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-white{% else %}text-gray-800{% endif %}">Newsletter</h4>
+            <form class="flex">
+              <input type="email" placeholder="Your email" class="flex-1 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 text-white border-gray-600{% else %}bg-gray-100 text-gray-800 border-gray-300{% endif %} border rounded-l-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary placeholder-gray-400">
+              <button type="submit" class="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-r-md transition">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+      <div class="border-t {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}border-gray-700{% else %}border-gray-200{% endif %} mt-8 pt-8 text-center {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-400{% else %}text-gray-500{% endif %}">
+        <p>&copy; 2023 Sri Sivani College of Engineering. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chatbot Widget -->
+  <div class="fixed bottom-6 right-6 z-40">
+    <button id="chatbot-toggle" class="bg-gradient-to-r from-primary to-accent text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:from-secondary hover:to-primary transition shadow-lg">
+      <i class="fas fa-comment-dots text-xl"></i>
+    </button>
+    
+    <div id="chatbot-container" class="hidden absolute bottom-16 right-0 w-80 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-card border border-gray-700{% else %}bg-white border border-gray-200{% endif %} rounded-lg shadow-xl overflow-hidden">
+      <div class="bg-gradient-to-r from-primary to-accent text-white p-4 flex justify-between items-center">
+        <h3 class="font-semibold">Alumni Assistant</h3>
+        <button id="chatbot-close" class="text-white hover:text-gray-200">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div id="chatbot-messages" class="h-64 p-4 overflow-y-auto {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-darker{% else %}bg-gray-50{% endif %}">
+        <div class="text-center {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}text-gray-500{% else %}text-gray-400{% endif %} py-4">How can I help you today?</div>
+      </div>
+      
+      <form id="chatbot-form" class="border-t {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}border-gray-700 bg-card{% else %}border-gray-200 bg-white{% endif %} p-4">
+        <div class="flex">
+          <input type="text" name="message" placeholder="Type your message..." 
+                 class="flex-1 {% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 border-gray-600 text-white{% else %}bg-gray-100 border-gray-300 text-gray-800{% endif %} border rounded-l-md px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary placeholder-gray-400">
+          <button type="submit" class="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-r-md transition">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Chatbot toggle functionality
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotContainer = document.getElementById('chatbot-container');
+    
+    chatbotToggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      chatbotContainer.classList.toggle('hidden');
+    });
+
+    document.getElementById('chatbot-close').addEventListener('click', function() {
+      chatbotContainer.classList.add('hidden');
+    });
+
+    // Close chatbot when clicking outside
+    document.addEventListener('click', function(e) {
+      if (!chatbotContainer.contains(e.target) && e.target !== chatbotToggle) {
+        chatbotContainer.classList.add('hidden');
+      }
+    });
+    
+    // Chatbot form submission
+    document.getElementById('chatbot-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const input = this.querySelector('input[name="message"]');
+      const message = input.value.trim();
+      const messagesDiv = document.getElementById('chatbot-messages');
+      
+      if (!message) return;
+
+      // Add user message
+      messagesDiv.innerHTML += `
+        <div class="flex justify-end mb-3">
+          <div class="bg-gradient-to-r from-primary to-accent text-white rounded-lg py-2 px-3 max-w-xs">
+            ${message}
+          </div>
+        </div>
+      `;
+      
+      input.value = '';
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      
+      // Add loading indicator
+      const loadingId = 'loading-' + Date.now();
+      messagesDiv.innerHTML += `
+        <div class="flex justify-start mb-3" id="${loadingId}">
+          <div class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 text-gray-300{% else %}bg-gray-200 text-gray-700{% endif %} rounded-lg py-2 px-3 max-w-xs">
+            <i class="fas fa-spinner fa-spin"></i> Thinking...
+          </div>
+        </div>
+      `;
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      
+      try {
+        const response = await fetch("/chatbot", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message })
+        });
+        
+        const data = await response.json();
+        
+        // Remove loading indicator
+        const loadingElement = document.getElementById(loadingId);
+        if (loadingElement) loadingElement.remove();
+        
+        if (data.error) {
+          throw new Error(data.error);
+        }
+        
+        // Add bot response
+        messagesDiv.innerHTML += `
+          <div class="flex justify-start mb-3">
+            <div class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-gray-700 text-gray-300{% else %}bg-gray-200 text-gray-700{% endif %} rounded-lg py-2 px-3 max-w-xs">
+              ${data.response}
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        // Remove loading indicator
+        const loadingElement = document.getElementById(loadingId);
+        if (loadingElement) loadingElement.remove();
+        
+        // Show error message
+        messagesDiv.innerHTML += `
+          <div class="flex justify-start mb-3">
+            <div class="{% if request.path in [url_for('about'), url_for('facilities')] or (request.path == url_for('portal') and current_user.is_authenticated) %}bg-red-900 text-red-200{% else %}bg-red-100 text-red-800{% endif %} rounded-lg py-2 px-3 max-w-xs">
+              Error: ${error.message}
+            </div>
+          </div>
+        `;
+      }
+      
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+  </script>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

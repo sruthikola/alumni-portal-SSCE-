@@ -1,0 +1,798 @@
+ {% extends "layout.html" %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen">
+  <!-- Portal Hero -->
+  <section class="bg-primary text-white py-20">
+    <div class="container px-4 mx-auto text-center">
+      <h1 class="text-4xl font-bold mb-4">Alumni Portal</h1>
+      <p class="text-xl max-w-2xl mx-auto">Connect, collaborate and grow with your fellow alumni</p>
+    </div>
+  </section>
+  
+<!-- Portal Navigation -->
+  <nav class="bg-white shadow-sm sticky top-0 z-30">
+    <div class="container px-4 mx-auto">
+      <div class="flex overflow-x-auto py-4 space-x-6">
+        <a href="#jobs" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Jobs</a>
+        <a href="#events" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Events</a>
+        <a href="#resume" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Resume Analyzer</a>
+        <a href="#mentorship" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Mentorship</a>
+        <a href="#forum" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Forum</a>
+        <a href="#newsletter" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Newsletter</a>
+        <a href="#achievements" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Achievements</a>
+        <a href="#donations" class="whitespace-nowrap px-3 py-2 hover:text-primary transition">Donations</a>
+      </div>
+    </div>
+  </nav>
+  
+  <!-- Main Content -->
+  <div class="container px-4 mx-auto py-12">
+    <!-- Jobs Section -->
+    <section id="jobs" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-briefcase mr-3 text-primary"></i> Job Board
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Post Job Form -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-4">Post a Job</h3>
+          <form method="POST" action="{{ url_for('post_job') }}">
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Job Title</label>
+              <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Company Name</label>
+              <input type="text" name="company" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Job Description</label>
+              <textarea name="description" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required></textarea>
+            </div>
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Post Job</button>
+          </form>
+        </div>
+        
+        <!-- Recent Jobs -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Recent Job Postings</h3>
+          <div class="space-y-4">
+            {% for job in jobs %}
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h4 class="text-lg font-semibold">{{ job.title }}</h4>
+              <p class="text-gray-600 mb-2">{{ job.company }}</p>
+              <p class="text-gray-700 mb-3">{{ job.description }}</p>
+              <p class="text-sm text-gray-500">Posted by {{ job.user.name }} on {{ job.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="#jobs" class="inline-block mt-4 text-primary hover:underline">View All Jobs</a>
+        </div>
+      </div>
+    </section>
+    
+         
+
+       <!-- Events Section -->
+      <section id="events" class="mb-20">
+  <h2 class="text-3xl font-bold mb-8 flex items-center">
+    <i class="fas fa-calendar-alt mr-3 text-primary"></i> Events
+  </h2>
+  
+  <div class="mb-6 flex justify-between items-center">
+    <h3 class="text-xl font-semibold">Upcoming Events</h3>
+    <a href="{{ url_for('portal') }}#events" class="text-primary hover:underline">View All</a>
+  </div>
+  
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    {% for event in events[-3:] %}  {# Show only 3 most recent events #}
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="p-6">
+        <h4 class="text-lg font-semibold mb-2">{{ event.name }}</h4>
+        <p class="text-gray-600 mb-2">
+          <i class="fas fa-calendar-alt mr-2"></i>
+          {{ event.date.strftime('%B %d, %Y') }}
+        </p>
+        {% if event.location %}
+        <p class="text-gray-600 mb-4">
+          <i class="fas fa-map-marker-alt mr-2"></i>
+          {{ event.location }}
+        </p>
+        {% endif %}
+        <p class="text-gray-700 mb-4">{{ event.description|truncate(150) }}</p>
+        <p class="text-sm text-gray-500">
+          Organized by: {{ event.user.name }}
+        </p>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-span-3 text-center py-8">
+      <p class="text-gray-500">No upcoming events scheduled yet.</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Create Event Form -->
+  <div class="bg-white rounded-xl shadow-sm p-6 mt-8">
+    <h3 class="text-xl font-semibold mb-4">Create New Event</h3>
+    <form method="POST" action="{{ url_for('create_event') }}">
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Event Name</label>
+        <input type="text" name="name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Date</label>
+        <input type="date" name="date" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Location</label>
+        <input type="text" name="location" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 mb-2">Description</label>
+        <textarea name="description" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required></textarea>
+      </div>
+      <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Create Event</button>
+    </form>
+  </div>
+      </section>
+        <!-- Upcoming Events -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Upcoming Events</h3>
+          <div class="space-y-4">
+            {% for event in events %}
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h4 class="text-lg font-semibold">{{ event.name }}</h4>
+              <p class="text-gray-600 mb-2">
+                <i class="fas fa-clock mr-2"></i> {{ event.date.strftime('%b %d, %Y') }}
+              </p>
+              <p class="text-gray-700 mb-3">{{ event.description }}</p>
+              {% if event.location %}
+              <p class="text-gray-600 mb-3">
+                <i class="fas fa-map-marker-alt mr-2"></i> {{ event.location }}
+              </p>
+              {% endif %}
+              <p class="text-sm text-gray-500">Organized by {{ event.user.name }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="#events" class="inline-block mt-4 text-primary hover:underline">View All Events</a>
+        </div>
+      </div>
+    </section>
+    <!-- Resume Analyzer Section -->
+    <section id="resume" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-file-alt mr-3 text-primary"></i> Resume Analyzer
+      </h2>
+         <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="text-xl font-semibold mb-4">Analyze Your Resume</h3>
+        <p class="text-gray-600 mb-6">Upload your resume in DOCX format to receive ATS compatibility feedback and improvement suggestions.</p>
+        
+        <form method="POST" action="{{ url_for('resume') }}" enctype="multipart/form-data" class="mb-8">
+          <div class="flex flex-col md:flex-row gap-4 items-start md:items-end">
+            <div class="flex-1 w-full">
+              <label class="block text-gray-700 mb-2 font-medium">Resume File (DOCX only)</label>
+              <input type="file" name="resume" accept=".docx" required
+                     class="block w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-lg file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-gray-100 file:text-gray-700
+                            hover:file:bg-gray-200">
+            </div>
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2.5 rounded-lg transition whitespace-nowrap">
+              <i class="fas fa-search mr-2"></i> Analyze Resume
+            </button>
+          </div>
+        </form>
+        
+        {% if resume_results %}
+        <div class="mt-8 border-t pt-8">
+          <h4 class="text-2xl font-bold mb-6 text-primary">Analysis Results</h4>
+          
+          <!-- Scores Section -->
+          <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <!-- ATS Score -->
+            <div class="bg-gray-50 p-6 rounded-xl">
+              <div class="flex items-center justify-between mb-4">
+                <h5 class="text-lg font-semibold">ATS Compatibility</h5>
+                <span class="text-2xl font-bold {% if resume_results.ats_score >= 80 %}text-green-600{% elif resume_results.ats_score >= 60 %}text-yellow-600{% else %}text-red-600{% endif %}">
+                  {{ resume_results.ats_score }}%
+                </span>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-3">
+                <div class="h-3 rounded-full {% if resume_results.ats_score >= 80 %}bg-green-500{% elif resume_results.ats_score >= 60 %}bg-yellow-500{% else %}bg-red-500{% endif %}" 
+                     style="width: {{ resume_results.ats_score }}%"></div>
+              </div>
+              <p class="text-sm text-gray-600 mt-2">
+                {% if resume_results.ats_score >= 80 %}
+                <i class="fas fa-check-circle text-green-500 mr-1"></i> Excellent ATS optimization
+                {% elif resume_results.ats_score >= 60 %}
+                <i class="fas fa-info-circle text-yellow-500 mr-1"></i> Good but could be improved
+                {% else %}
+                <i class="fas fa-exclamation-circle text-red-500 mr-1"></i> Needs significant improvements
+                {% endif %}
+              </p>
+            </div>
+            
+            <!-- Job Match -->
+            <div class="bg-gray-50 p-6 rounded-xl">
+              <div class="flex items-center justify-between mb-4">
+                <h5 class="text-lg font-semibold">Job Role Match</h5>
+                <span class="text-2xl font-bold {% if resume_results.match_score >= 80 %}text-green-600{% elif resume_results.match_score >= 60 %}text-yellow-600{% else %}text-red-600{% endif %}">
+                  {{ resume_results.match_score }}%
+                </span>
+              </div>
+              <p class="font-medium mb-1">{{ resume_results.job }}</p>
+              <div class="w-full bg-gray-200 rounded-full h-3">
+                <div class="h-3 rounded-full {% if resume_results.match_score >= 80 %}bg-green-500{% elif resume_results.match_score >= 60 %}bg-yellow-500{% else %}bg-red-500{% endif %}" 
+                     style="width: {{ resume_results.match_score }}%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Information -->
+          {% if resume_results.email %}
+          <div class="mb-8">
+            <h5 class="text-lg font-semibold mb-3 flex items-center">
+              <i class="fas fa-envelope mr-2 text-primary"></i> Contact Information
+            </h5>
+            <div class="bg-blue-50 p-4 rounded-lg">
+              <p class="font-medium">Email: <span class="font-normal text-gray-700">{{ resume_results.email }}</span></p>
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Skills Section -->
+          <div class="mb-8">
+            <h5 class="text-lg font-semibold mb-3 flex items-center">
+              <i class="fas fa-tools mr-2 text-primary"></i> Skills Identified
+            </h5>
+            <div class="flex flex-wrap gap-2">
+              {% for skill in resume_results.skills %}
+                <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                  <i class="fas fa-check-circle text-blue-500 mr-1 text-xs"></i>
+                  {{ skill }}
+                </span>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Suggestions Section -->
+          <div class="mb-4">
+            <h5 class="text-lg font-semibold mb-3 flex items-center">
+              <i class="fas fa-lightbulb mr-2 text-primary"></i> Improvement Suggestions
+            </h5>
+            <div class="space-y-3">
+              {% for suggestion in resume_results.suggestions %}
+                <div class="flex items-start bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                  <span class="flex-shrink-0 text-yellow-500 mr-3 mt-0.5">
+                    <i class="fas fa-exclamation-circle"></i>
+                  </span>
+                  <p class="text-gray-800">{{ suggestion }}</p>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Download Report Button -->
+          <div class="mt-8 text-center">
+            <button class="bg-primary hover:bg-secondary text-white px-6 py-3 rounded-lg transition inline-flex items-center">
+              <i class="fas fa-download mr-2"></i> Download Full Analysis Report
+            </button>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    
+    <!-- Mentorship Section -->
+    <section id="mentorship" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-hands-helping mr-3 text-primary"></i> Mentorship Program
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Request Mentorship -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-4">Request Mentorship</h3>
+          <form>
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">What guidance do you need?</label>
+              <textarea rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary"></textarea>
+            </div>
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Submit Request</button>
+          </form>
+        </div>
+        
+        <!-- Become a Mentor -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-4">Become a Mentor</h3>
+          <p class="text-gray-700 mb-6">Share your expertise with current students and recent graduates.</p>
+          <button class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition">Sign Up as Mentor</button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Forum Section -->
+    <section id="forum" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-comments mr-3 text-primary"></i> Alumni Forum
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Create Post -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-4">Create Post</h3>
+          <form method="POST" action="{{ url_for('create_post') }}">
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Title</label>
+              <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Content</label>
+              <textarea name="content" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required></textarea>
+            </div>
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Post</button>
+          </form>
+        </div>
+        
+        <!-- Recent Discussions -->
+        <div>
+          <h3 class="text-xl font-semibold mb-4">Recent Discussions</h3>
+          <div class="space-y-4">
+            {% for post in posts %}
+            <div class="bg-white rounded-xl shadow-sm p-6">
+              <h4 class="text-lg font-semibold">{{ post.title }}</h4>
+              <p class="text-gray-700 mb-3">{{ post.content }}</p>
+              <p class="text-sm text-gray-500">Posted by {{ post.user.name }} on {{ post.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="#forum" class="inline-block mt-4 text-primary hover:underline">View All Posts</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section id="newsletter" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-newspaper mr-3 text-primary"></i> Newsletter
+      </h2>
+      
+      <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm p-8 text-center">
+        <h3 class="text-xl font-semibold mb-2">Subscribe to Our Newsletter</h3>
+        <p class="text-gray-600 mb-6">Stay updated with alumni news, events, and opportunities</p>
+        <form method="POST" action="{{ url_for('subscribe') }}" class="flex">
+          <input type="email" name="email" placeholder="Your email address" 
+                 class="flex-1 px-4 py-3 border rounded-l-lg focus:ring-2 focus:ring-primary" required>
+          <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-3 rounded-r-lg transition">Subscribe</button>
+        </form>
+      </div>
+    </section>
+    <!-- Achievements.html -->
+     <section id="achievements" class="mb-20">
+    <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-trophy mr-3 text-primary"></i> Alumni Achievements
+    </h2>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- Post Achievement Form -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <h3 class="text-xl font-semibold mb-4">Share Your Achievement</h3>
+            <form method="POST" action="{{ url_for('achievements') }}" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Title</label>
+                    <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Description</label>
+                    <textarea name="description" rows="4" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2">Image (Optional)</label>
+                    <input type="file" name="image" class="block w-full text-sm text-gray-500
+                           file:mr-4 file:py-2 file:px-4
+                           file:rounded-lg file:border-0
+                           file:text-sm file:font-semibold
+                           file:bg-gray-100 file:text-gray-700
+                           hover:file:bg-gray-200">
+                    <p class="text-xs text-gray-500 mt-1">JPG, PNG, or GIF (Max 5MB)</p>
+                </div>
+                <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Share Achievement</button>
+            </form>
+        </div>
+        
+        <!-- Achievements Feed -->
+        <div>
+            <h3 class="text-xl font-semibold mb-4">Recent Achievements</h3>
+            <div class="space-y-4">
+                {% for achievement in achievements %}
+                <div class="bg-white rounded-xl shadow-sm p-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden mr-3">
+                            {% if achievement.user.profile_pic %}
+                                <img src="{{ achievement.user.profile_pic }}" alt="Profile" class="w-full h-full object-cover">
+                            {% else %}
+                                <i class="fas fa-user text-gray-400"></i>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <h4 class="font-medium">{{ achievement.user.name }}</h4>
+                            <p class="text-xs text-gray-500">{{ achievement.created_at.strftime('%b %d, %Y') }}</p>
+                        </div>
+                    </div>
+                    <h5 class="text-lg font-semibold text-primary mb-2">{{ achievement.title }}</h5>
+                    <p class="text-gray-700 mb-3">{{ achievement.description }}</p>
+                    {% if achievement.image_path %}
+                    <div class="mt-3">
+                        <img src="{{ url_for('static', filename='uploads/' + achievement.image_path) }}" 
+                             class="w-full rounded-lg" alt="Achievement Image">
+                    </div>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div class="bg-white rounded-xl shadow-sm p-6 text-center">
+                    <p class="text-gray-500">No achievements shared yet. Be the first to share!</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+     </section>
+    <!-- Chatbot Section -->
+<section id="chatbot" class="mb-20">
+  <h2 class="text-3xl font-bold mb-8 flex items-center">
+    <i class="fas fa-robot mr-3 text-primary"></i> Alumni Assistant
+  </h2>
+  
+  <div class="bg-white rounded-xl shadow-sm p-6 max-w-3xl mx-auto">
+    <div class="mb-4">
+      <p class="text-gray-600 mb-2">Ask me anything about the alumni portal.</p>
+      <div id="chat-container" class="border rounded-lg p-4 mb-4 h-64 overflow-y-auto bg-gray-50">
+        <div class="text-gray-500 italic">AlumniBot: Hello! How can I help you today?</div>
+      </div>
+      <div class="flex">
+        <input type="text" id="chat-input" placeholder="Type your message..." 
+               class="flex-1 px-4 py-2 border rounded-l-lg focus:ring-2 focus:ring-primary focus:outline-none">
+        <button id="send-btn" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-r-lg transition">
+          <i class="fas fa-paper-plane mr-2"></i> Send
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+    
+    <!-- Donations Section -->
+    <section id="donations">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-heart mr-3 text-primary"></i> Donations
+      </h2>
+      
+      <div class="max-w-md mx-auto bg-white rounded-xl shadow-sm p-8">
+        <h3 class="text-xl font-semibold mb-4 text-center">Support Your Alma Mater</h3>
+        <form method="POST" action="{{ url_for('donate') }}">
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">Your Name</label>
+            <input type="text" name="name" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+          </div>
+          <div class="mb-4">
+            <label class="block text-gray-700 mb-2">Amount</label>
+            <input type="number" step="0.01" name="amount" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+          </div>
+          <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg transition">Donate</button>
+        </form>
+      </div>
+    </section>
+  </div>
+      <!-- Profile Section -->
+    <section id="profile" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-user-circle mr-3 text-primary"></i> My Profile
+      </h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Profile Info -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex flex-col items-center mb-6">
+            <div class="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center mb-4 overflow-hidden">
+              {% if current_user.profile_pic %}
+                <img src="{{ current_user.profile_pic }}" alt="Profile Picture" class="w-full h-full object-cover">
+              {% else %}
+                <i class="fas fa-user text-4xl text-gray-400"></i>
+              {% endif %}
+            </div>
+            <h3 class="text-xl font-semibold">{{ current_user.name }}</h3>
+            <p class="text-gray-600">{{ current_user.role|capitalize }}</p>
+          </div>
+          
+          <div class="space-y-4">
+            <div>
+              <p class="text-sm text-gray-500">Email</p>
+              <p>{{ current_user.email }}</p>
+            </div>
+            {% if current_user.grad_year %}
+            <div>
+              <p class="text-sm text-gray-500">Graduation Year</p>
+              <p>{{ current_user.grad_year }}</p>
+            </div>
+            {% endif %}
+            {% if current_user.branch %}
+            <div>
+              <p class="text-sm text-gray-500">Branch</p>
+              <p>{{ current_user.branch }}</p>
+            </div>
+            {% endif %}
+            {% if current_user.company %}
+            <div>
+              <p class="text-sm text-gray-500">Company</p>
+              <p>{{ current_user.company }}</p>
+            </div>
+            {% endif %}
+            {% if current_user.position %}
+            <div>
+              <p class="text-sm text-gray-500">Position</p>
+              <p>{{ current_user.position }}</p>
+            </div>
+            {% endif %}
+            {% if current_user.linkedin or current_user.github %}
+            <div>
+              <p class="text-sm text-gray-500 mb-2">Social Links</p>
+              <div class="flex space-x-4">
+                {% if current_user.linkedin %}
+                <a href="{{ current_user.linkedin }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                  <i class="fab fa-linkedin text-xl"></i>
+                </a>
+                {% endif %}
+                {% if current_user.github %}
+                <a href="{{ current_user.github }}" target="_blank" class="text-gray-800 hover:text-gray-600">
+                  <i class="fab fa-github text-xl"></i>
+                </a>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        
+        <!-- Activity Summary -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-6">My Activity</h3>
+          
+          <div class="space-y-6">
+            <div>
+              <h4 class="font-medium mb-2 flex items-center">
+                <i class="fas fa-briefcase mr-2 text-primary"></i> Jobs Posted
+              </h4>
+              <p class="text-2xl font-bold">{{ current_user.jobs|length }}</p>
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-2 flex items-center">
+                <i class="fas fa-calendar-alt mr-2 text-primary"></i> Events Created
+              </h4>
+              <p class="text-2xl font-bold">{{ current_user.events|length }}</p>
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-2 flex items-center">
+                <i class="fas fa-comments mr-2 text-primary"></i> Forum Posts
+              </h4>
+              <p class="text-2xl font-bold">{{ current_user.forum_posts|length }}</p>
+            </div>
+            
+            <div>
+              <h4 class="font-medium mb-2 flex items-center">
+                <i class="fas fa-hand-holding-heart mr-2 text-primary"></i> Donations
+              </h4>
+              <p class="text-2xl font-bold">{{ current_user.donations|length }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-6">Recent Activity</h3>
+          
+          <div class="space-y-4">
+            {% for job in current_user.jobs[-3:] %}
+            <div class="border-b border-gray-100 pb-4">
+              <p class="text-sm text-gray-500">Posted a job</p>
+              <p class="font-medium">{{ job.title }} at {{ job.company }}</p>
+              <p class="text-xs text-gray-500">{{ job.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+            {% endfor %}
+            
+            {% for event in current_user.events[-3:] %}
+            <div class="border-b border-gray-100 pb-4">
+              <p class="text-sm text-gray-500">Created an event</p>
+              <p class="font-medium">{{ event.name }}</p>
+              <p class="text-xs text-gray-500">{{ event.date.strftime('%b %d, %Y') }}</p>
+            </div>
+            {% endfor %}
+            
+            {% for post in current_user.forum_posts[-3:] %}
+            <div class="border-b border-gray-100 pb-4">
+              <p class="text-sm text-gray-500">Posted in forum</p>
+              <p class="font-medium">{{ post.title }}</p>
+              <p class="text-xs text-gray-500">{{ post.created_at.strftime('%b %d, %Y') }}</p>
+            </div>
+            {% endfor %}
+            
+            {% if not current_user.jobs and not current_user.events and not current_user.forum_posts %}
+            <p class="text-gray-500">No recent activity yet</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Settings Section -->
+    <section id="settings" class="mb-20">
+      <h2 class="text-3xl font-bold mb-8 flex items-center">
+        <i class="fas fa-cog mr-3 text-primary"></i> Settings
+      </h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Account Settings -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-6">Account Settings</h3>
+          
+          <form method="POST" action="{{ url_for('update_profile') }}">
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Full Name</label>
+              <input type="text" name="name" value="{{ current_user.name }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Profile Picture URL</label>
+              <input type="url" name="profile_pic" value="{{ current_user.profile_pic if current_user.profile_pic else '' }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" placeholder="https://example.com/profile.jpg">
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Graduation Year</label>
+              <input type="number" name="grad_year" value="{{ current_user.grad_year if current_user.grad_year else '' }}" min="1900" max="2100" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Branch</label>
+              <input type="text" name="branch" value="{{ current_user.branch if current_user.branch else '' }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+            </div>
+            
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Update Profile</button>
+          </form>
+        </div>
+        
+        <!-- Professional Details -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="text-xl font-semibold mb-6">Professional Details</h3>
+          
+          <form method="POST" action="{{ url_for('update_professional') }}">
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Current Company</label>
+              <input type="text" name="company" value="{{ current_user.company if current_user.company else '' }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Position</label>
+              <input type="text" name="position" value="{{ current_user.position if current_user.position else '' }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">LinkedIn Profile</label>
+              <input type="url" name="linkedin" value="{{ current_user.linkedin if current_user.linkedin else '' }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" placeholder="https://linkedin.com/in/yourprofile">
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">GitHub Profile</label>
+              <input type="url" name="github" value="{{ current_user.github if current_user.github else '' }}" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" placeholder="https://github.com/yourusername">
+            </div>
+            
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Update Professional Info</button>
+          </form>
+        </div>
+        
+        <!-- Change Password -->
+        <div class="bg-white rounded-xl shadow-sm p-6 md:col-span-2">
+          <h3 class="text-xl font-semibold mb-6">Change Password</h3>
+          
+          <form method="POST" action="{{ url_for('change_password') }}">
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Current Password</label>
+              <input type="password" name="current_password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">New Password</label>
+              <input type="password" name="new_password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            
+            <div class="mb-4">
+              <label class="block text-gray-700 mb-2">Confirm New Password</label>
+              <input type="password" name="confirm_password" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary" required>
+            </div>
+            
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded-lg transition">Change Password</button>
+          </form>
+        </div>
+      </div>
+    </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const chatInput = document.getElementById('chat-input');
+  const sendBtn = document.getElementById('send-btn');
+  const chatContainer = document.getElementById('chat-container');
+
+  function addMessage(sender, message) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `mb-3 ${sender === 'user' ? 'text-right' : 'text-left'}`;
+    if (sender === 'user') {
+      messageDiv.innerHTML = `
+        <div class="inline-block max-w-xs md:max-w-md lg:max-w-lg">
+          <div class="bg-primary text-white px-4 py-2 rounded-lg rounded-tr-none">
+            ${message}
+          </div>
+          <div class="text-xs text-gray-500 mt-1">You</div>
+        </div>
+      `;
+    } else {
+      messageDiv.innerHTML = `
+        <div class="inline-block max-w-xs md:max-w-md lg:max-w-lg">
+          <div class="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg rounded-tl-none">
+            ${message}
+          </div>
+          <div class="text-xs text-gray-500 mt-1">AlumniBot</div>
+        </div>
+      `;
+    }
+    chatContainer.appendChild(messageDiv);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const message = chatInput.value.trim();
+    if (!message) return;
+
+    addMessage('user', message);
+    chatInput.value = '';
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Sending...';
+
+    try {
+      const response = await fetch('/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message })
+      });
+      const data = await response.json();
+      if (data.status === 'success') {
+        const formatted = data.response.replace(/\n/g, '<br>');
+        addMessage('bot', formatted);
+      } else {
+        addMessage('bot', 'Bot error: ' + data.response);
+      }
+    } catch (error) {
+      console.error(error);
+      addMessage('bot', 'Network error');
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Send';
+      chatInput.focus();
+    }
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  chatInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+});
+
+</script>
+{% endblock %}  

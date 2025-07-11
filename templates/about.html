@@ -1,0 +1,89 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- About Section -->
+<section class="py-16 bg-white">
+  <div class="container px-4 mx-auto">
+    <div class="flex flex-col md:flex-row items-center gap-12">
+      <div class="md:w-1/2">
+        <h2 class="text-3xl font-bold mb-6">About Our Alumni Portal</h2>
+        <p class="text-gray-600 mb-4">The Alumni Portal is designed to connect graduates of Sri Sivani College of Engineering, fostering lifelong relationships and creating opportunities for professional growth.</p>
+        <p class="text-gray-600 mb-4">Our mission is to build a strong, supportive community where alumni can network, share opportunities, mentor current students, and stay connected with their alma mater.</p>
+        <p class="text-gray-600">Whether you're looking for career opportunities, wanting to give back, or just stay in touch with classmates, our portal provides the tools you need.</p>
+      </div>
+      <div class="md:w-1/2">
+        <img src="{{ url_for('static', filename='images/sivani.jpeg') }}" alt="Sri Sivani College of Engineering" class="rounded-xl shadow-md w-full">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats Section -->
+<section class="py-16 bg-primary text-white">
+  <div class="container px-4 mx-auto">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div>
+        <p class="text-4xl font-bold mb-2">5,000+</p>
+        <p class="text-gray-200">Alumni</p>
+      </div>
+      <div>
+        <p class="text-4xl font-bold mb-2">120+</p>
+        <p class="text-gray-200">Companies</p>
+      </div>
+      <div>
+        <p class="text-4xl font-bold mb-2">50+</p>
+        <p class="text-gray-200">Countries</p>
+      </div>
+      <div>
+        <p class="text-4xl font-bold mb-2">100+</p>
+        <p class="text-gray-200">Events Yearly</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-16 bg-gray-50">
+  <div class="container px-4 mx-auto">
+    <h2 class="text-3xl font-bold mb-12 text-center">What Our Alumni Say</h2>
+    
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Testimonial 1 -->
+      <div class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-4">AS</div>
+          <div>
+            <h4 class="font-semibold">Amit Sharma</h4>
+            <p class="text-gray-500 text-sm">Class of 2015</p>
+          </div>
+        </div>
+        <p class="text-gray-600">"The alumni portal helped me reconnect with old classmates and find new career opportunities. The mentorship program is especially valuable."</p>
+      </div>
+      
+      <!-- Testimonial 2 -->
+      <div class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-4">PK</div>
+          <div>
+            <h4 class="font-semibold">Priya Kumar</h4>
+            <p class="text-gray-500 text-sm">Class of 2018</p>
+          </div>
+        </div>
+        <p class="text-gray-600">"I found my current job through the alumni job board. The network is incredibly supportive and always willing to help fellow graduates."</p>
+      </div>
+      
+      <!-- Testimonial 3 -->
+      <div class="bg-white p-6 rounded-xl shadow-sm">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white font-bold mr-4">RJ</div>
+          <div>
+            <h4 class="font-semibold">Rajesh Jain</h4>
+            <p class="text-gray-500 text-sm">Class of 2010</p>
+          </div>
+        </div>
+        <p class="text-gray-600">"As a mentor, I've enjoyed giving back to current students. The platform makes it easy to connect and share experiences."</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

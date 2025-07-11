@@ -1,0 +1,522 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="bg-gray-50 min-h-screen">
+    <!-- Hero Section -->
+    <section class="bg-primary text-white py-20">
+        <div class="container px-4 mx-auto text-center">
+            <h1 class="text-4xl font-bold mb-4">College Facilities</h1>
+            <p class="text-xl max-w-2xl mx-auto">World-class infrastructure for quality education</p>
+        </div>
+    </section>
+
+    <!-- Facilities Content -->
+    <div class="container px-4 mx-auto py-12">
+        <!-- Categories Navigation -->
+        <div class="mb-12 overflow-x-auto">
+            <div class="flex space-x-4 pb-2">
+                <button class="facility-category-btn active px-4 py-2 bg-primary text-white rounded-lg" data-category="all">All Facilities</button>
+                <button class="facility-category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition" data-category="labs">Labs</button>
+                <button class="facility-category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition" data-category="library">Library</button>
+                <button class="facility-category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition" data-category="sports">Sports</button>
+                <button class="facility-category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition" data-category="hostel">Hostel</button>
+                <button class="facility-category-btn px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg transition" data-category="campus">Campus</button>
+            </div>
+        </div>
+
+        <!-- Facilities Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="facilities-container">
+            <!-- CSE Lab -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="labs" data-lab-type="cse">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/labs/cse/1.jpg') }}" 
+                         alt="CSE Lab - Main View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/labs/cse/2.jpg') }}" 
+                         alt="CSE Lab - Workstation View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/labs/cse/3.jpg') }}" 
+                         alt="CSE Lab - Equipment View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">CSE Lab</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Computer Science Lab</h3>
+                    <p class="text-gray-600 mb-4">High-performance computing systems with latest software</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-desktop mr-2"></i>
+                        <span>60+ Workstations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ECE Lab -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="labs" data-lab-type="ece">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/labs/ece/1.jpg') }}" 
+                         alt="ECE Lab - Main View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/labs/ece/2.jpg') }}" 
+                         alt="ECE Lab - Circuit View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/labs/ece/3.jpg') }}" 
+                         alt="ECE Lab - Equipment View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-purple-100 text-purple-800 text-xs font-medium px-2.5 py-0.5 rounded">ECE Lab</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Electronics Lab</h3>
+                    <p class="text-gray-600 mb-4">Advanced equipment for circuit design and communication</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-microchip mr-2"></i>
+                        <span>40+ Workstations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EEE Lab -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="labs" data-lab-type="eee">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/labs/eee/1.jpg') }}" 
+                         alt="EEE Lab - Main View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/labs/eee/2.jpg') }}" 
+                         alt="EEE Lab - Power Systems View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/labs/eee/3.jpg') }}" 
+                         alt="EEE Lab - Equipment View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">EEE Lab</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Electrical Engineering Lab</h3>
+                    <p class="text-gray-600 mb-4">Facilities for power systems and electrical machines</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-bolt mr-2"></i>
+                        <span>30+ Workstations</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Civil Lab -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="labs" data-lab-type="civil">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/labs/civil/1.jpg') }}" 
+                         alt="Civil Lab - Main View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/labs/civil/2.jpg') }}" 
+                         alt="Civil Lab - Testing View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/labs/civil/3.jpg') }}" 
+                         alt="Civil Lab - Surveying View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Civil Lab</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Civil Engineering Lab</h3>
+                    <p class="text-gray-600 mb-4">Facilities for concrete testing and structural analysis</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-ruler-combined mr-2"></i>
+                        <span>Testing Equipment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mechanical Lab -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="labs" data-lab-type="mechanical">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/labs/mechanical/1.jpg') }}" 
+                         alt="Mechanical Lab - Main View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/labs/mechanical/2.jpg') }}" 
+                         alt="Mechanical Lab - Workshop" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/labs/mechanical/3.jpg') }}" 
+                         alt="Mechanical Lab - CNC Machines" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-orange-100 text-orange-800 text-xs font-medium px-2.5 py-0.5 rounded">Mechanical</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Mechanical Workshop</h3>
+                    <p class="text-gray-600 mb-4">Equipped with lathes, CNC machines and testing equipment</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-cogs mr-2"></i>
+                        <span>20+ Machines</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Library -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="library">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/library/1.jpg') }}" 
+                         alt="Library - Main Hall" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/library/2.jpg') }}" 
+                         alt="Library - Reading Area" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/library/3.jpg') }}" 
+                         alt="Library - Stack Area" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                     <img src="{{ url_for('static', filename='images/library/4.jpg') }}" 
+                         alt="Library - Stack Area" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">     
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">Library</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Central Library</h3>
+                    <p class="text-gray-600 mb-4">Extensive collection of books, journals and digital resources</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>10,000+ Books</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sports Complex -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="sports">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/sports/1.jpg') }}" 
+                         alt="Sports Complex - Main View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/sports/2.jpg') }}" 
+                         alt="Sports Complex - Indoor Games" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/sports/3.jpg') }}" 
+                         alt="Sports Complex - Outdoor Games" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/sports/4.jpg') }}" 
+                         alt="Sports Complex - Outdoor Games" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">     
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded">Sports</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Sports Complex</h3>
+                    <p class="text-gray-600 mb-4">Modern facilities for various indoor and outdoor sports</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-running mr-2"></i>
+                        <span>15+ Sports</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hostel -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="hostel">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/hostel/1.jpg') }}" 
+                         alt="Hostel - Main Building" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/hostel/2.jpg') }}" 
+                         alt="Hostel - Room View" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/hostel/3.jpg') }}" 
+                         alt="Hostel - Common Area" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded">Hostel</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Student Hostel</h3>
+                    <p class="text-gray-600 mb-4">Comfortable accommodation with modern amenities</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-bed mr-2"></i>
+                        <span>300+ Rooms</span>
+                    </div>
+                </div>
+            </div>
+            <!-- Campus Facility 1 -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="campus">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/campus/1.jpg') }}" 
+                         alt="Main Academic Building" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/campus/2.jpg') }}" 
+                         alt="Campus Entrance" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/3.jpg') }}" 
+                         alt="Campus Garden" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/4.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                         <img src="{{ url_for('static', filename='images/campus/5.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/6.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/7.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-teal-100 text-teal-800 text-xs font-medium px-2.5 py-0.5 rounded">Campus</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Main Academic Building</h3>
+                    <p class="text-gray-600 mb-4">The central hub of academic activities with modern classrooms</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-building mr-2"></i>
+                        <span>50+ Classrooms</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Campus Facility 2 -->
+            <div class="facility-item bg-white rounded-xl shadow-sm overflow-hidden" data-category="campus">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/campus/11.jpg') }}" 
+                         alt="College Auditorium" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-100 active-image">
+                    <img src="{{ url_for('static', filename='images/campus/12.jpg') }}" 
+                         alt="Auditorium Stage" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/13.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/14.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/15.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <img src="{{ url_for('static', filename='images/campus/16.jpg') }}" 
+                         alt="Auditorium Seating" 
+                         class="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0">
+                    <button class="gallery-prev absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="gallery-next absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-100 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                        <span class="dot w-2 h-2 bg-white rounded-full opacity-50 cursor-pointer"></span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <div class="flex items-center mb-2">
+                        <span class="bg-teal-100 text-teal-800 text-xs font-medium px-2.5 py-0.5 rounded">Campus</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Central Auditorium</h3>
+                    <p class="text-gray-600 mb-4">1000+ capacity auditorium for events and conferences</p>
+                    <div class="flex items-center text-sm text-gray-500">
+                        <i class="fas fa-theater-masks mr-2"></i>
+                        <span>Events & Performances</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Category filtering
+    const categoryButtons = document.querySelectorAll('.facility-category-btn');
+    const facilityItems = document.querySelectorAll('.facility-item');
+    
+    categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            categoryButtons.forEach(btn => {
+                btn.classList.remove('active', 'bg-primary', 'text-white');
+                btn.classList.add('bg-gray-200', 'hover:bg-gray-300');
+            });
+            this.classList.add('active', 'bg-primary', 'text-white');
+            this.classList.remove('bg-gray-200', 'hover:bg-gray-300');
+
+            const category = this.getAttribute('data-category');
+            facilityItems.forEach(item => {
+                if (category === 'all') {
+                    item.style.display = 'block';
+                } else {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (itemCategory === category) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+            });
+        });
+    });
+
+    // Gallery functionality for each facility
+    document.querySelectorAll('.facility-item').forEach(item => {
+        const images = Array.from(item.querySelectorAll('img')).filter(img => !img.classList.contains('active-image'));
+        const activeImage = item.querySelector('.active-image');
+        const dots = item.querySelectorAll('.dot');
+        const prevBtn = item.querySelector('.gallery-prev');
+        const nextBtn = item.querySelector('.gallery-next');
+        
+        // Include the active image in the images array
+        const allImages = [activeImage, ...images];
+        let currentIndex = 0;
+        
+        function showImage(index) {
+            // Hide all images
+            allImages.forEach(img => {
+                img.classList.remove('opacity-100', 'active-image');
+                img.classList.add('opacity-0');
+            });
+            
+            // Show selected image
+            allImages[index].classList.remove('opacity-0');
+            allImages[index].classList.add('opacity-100', 'active-image');
+            
+            // Update dots
+            dots.forEach(dot => dot.classList.remove('opacity-100'));
+            dots.forEach(dot => dot.classList.add('opacity-50'));
+            dots[index].classList.remove('opacity-50');
+            dots[index].classList.add('opacity-100');
+            
+            currentIndex = index;
+        }
+        
+        // Navigation
+        nextBtn.addEventListener('click', () => {
+            showImage((currentIndex + 1) % allImages.length);
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            showImage((currentIndex - 1 + allImages.length) % allImages.length);
+        });
+        
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showImage(index));
+        });
+        
+        // Auto-rotate (optional)
+        setInterval(() => {
+            showImage((currentIndex + 1) % allImages.length);
+        }, 5000);
+    });
+});
+</script>
+{% endblock %}
+{% endblock %}
